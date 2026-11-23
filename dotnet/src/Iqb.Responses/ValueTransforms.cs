@@ -236,12 +236,18 @@ internal static partial class ValueTransforms
 
     public static List<object?> AsArray(object value) => ((IEnumerable<object?>)value).ToList();
 
-    [GeneratedRegex("[" + EcmaScript.WhiteSpaceRanges + "]+")]
-    private static partial Regex WhiteSpaceRegex();
+    private static readonly Regex WhiteSpacePattern =
+        new("[" + EcmaScript.WhiteSpaceRanges + "]+", RegexOptions.Compiled);
 
-    [GeneratedRegex(@"^[-+]?\d+(\.\d+)?$")]
-    private static partial Regex StrictNumberRegex();
+    private static readonly Regex StrictNumberPattern =
+        new(@"^[-+]?\d+(\.\d+)?$", RegexOptions.Compiled);
 
-    [GeneratedRegex(@"^[+-]?(?:(?:\d+\.?\d*)|(?:\.\d+))(?:[eE][+-]?\d+)?")]
-    private static partial Regex ParseFloatRegex();
+    private static readonly Regex ParseFloatPattern =
+        new(@"^[+-]?(?:(?:\d+\.?\d*)|(?:\.\d+))(?:[eE][+-]?\d+)?", RegexOptions.Compiled);
+
+    private static Regex WhiteSpaceRegex() => WhiteSpacePattern;
+
+    private static Regex StrictNumberRegex() => StrictNumberPattern;
+
+    private static Regex ParseFloatRegex() => ParseFloatPattern;
 }
