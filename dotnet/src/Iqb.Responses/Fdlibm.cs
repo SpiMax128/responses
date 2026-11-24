@@ -28,8 +28,9 @@ namespace Iqb.Responses;
 /// <summary>
 /// Managed ports of the FreeBSD msun (fdlibm-derived) <c>cbrt</c> and <c>log2</c> implementations,
 /// which are also used by V8 for <c>Math.cbrt</c> and <c>Math.log2</c>.
-/// netstandard2.0 has no <c>Math.Cbrt</c>/<c>Math.Log2</c>; approximations such as <c>Math.Pow(x, 1d / 3d)</c>
-/// or <c>Math.Log(x) / Math.Log(2d)</c> do not round like the TypeScript reference.
+/// They are used on every target: .NET's <c>Math.Cbrt</c> and <c>Math.Log2</c> differ from V8 in the last bit for
+/// many inputs, and netstandard2.0 has neither (approximations such as <c>Math.Pow(x, 1d / 3d)</c> or
+/// <c>Math.Log(x) / Math.Log(2d)</c> do not round like the TypeScript reference either).
 /// </summary>
 internal static class Fdlibm
 {

@@ -78,11 +78,12 @@ stop evaluating operands after the first false comparison.
 
 Matrices, units, assignments, user-defined functions, complex values and other
 unrestricted `mathjs` features are not supported. Unsupported syntax and
-non-finite final results produce `DERIVE_ERROR`. Transcendental results can
-differ from V8 by one final IEEE-754 bit because the runtimes use different
-math implementations. Differential tests allow at most one IEEE-754 ULP for a
-direct, finite result using `exp`, logarithmic, trigonometric or `hypot`
-functions. Status, error and downstream coding results remain exact
+non-finite final results produce `DERIVE_ERROR`. `cbrt` and `log2` use ports of
+the fdlibm implementations that V8 uses and match it exactly. Other
+transcendental results can differ from V8 by one final IEEE-754 bit because the
+runtimes use different math implementations. Differential tests allow at most
+one IEEE-754 ULP for a direct, finite result using `exp`, `log`, `log10`,
+trigonometric or `hypot` functions. Status, error and downstream coding results remain exact
 comparisons. `gcd` requires at least two finite integer arguments and remains
 an exact comparison.
 

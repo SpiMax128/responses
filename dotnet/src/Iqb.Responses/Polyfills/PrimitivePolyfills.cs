@@ -10,10 +10,6 @@ internal static class PrimitivePolyfills
     extension(Math)
     {
         public static double Tau => 2d * Math.PI;
-
-        public static double Cbrt(double x) => Iqb.Responses.Fdlibm.Cbrt(x);
-
-        public static double Log2(double x) => Iqb.Responses.Fdlibm.Log2(x);
     }
 
     extension(char)

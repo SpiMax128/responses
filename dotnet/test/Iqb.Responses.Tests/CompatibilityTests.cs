@@ -220,6 +220,20 @@ public sealed class CompatibilityTests
     public void Solver_parser_supports_its_declared_grammar(string expression, object expected) =>
         Assert.Equal(expected, SolverExpression.Evaluate(expression));
 
+    // Expected values are V8's Math.cbrt and Math.log2; .NET's Math.Cbrt and Math.Log2 differ in the last bit here.
+    [Theory]
+    [InlineData("cbrt(-486)", -7.86222418262669d)]
+    [InlineData("cbrt(812)", 9.329363390985685d)]
+    [InlineData("cbrt(3051.8446667361277)", 14.505102709418592d)]
+    [InlineData("cbrt(-231)", -6.135792439661959d)]
+    [InlineData("log2(2.723193961532422)", 1.4452997430777266d)]
+    [InlineData("log2(0.8452806602443008)", -0.2424976530024595d)]
+    [InlineData("log2(0.08035121792012412)", -3.637536298120694d)]
+    [InlineData("log2(0.3622858030080264)", -1.4647998232701231d)]
+    public void Solver_cbrt_and_log2_match_V8_exactly(string expression, double expected) =>
+        Assert.Equal(BitConverter.DoubleToInt64Bits(expected),
+            BitConverter.DoubleToInt64Bits((double)SolverExpression.Evaluate(expression)!));
+
     [Theory]
     [InlineData("garbage")]
     [InlineData("1 +")]
