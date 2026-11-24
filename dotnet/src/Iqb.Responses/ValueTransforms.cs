@@ -14,7 +14,7 @@ internal static partial class ValueTransforms
         if (value == 0d) return "0";
 
         var sign = value < 0 ? "-" : string.Empty;
-        var raw = Math.Abs(value).ToString("R", CultureInfo.InvariantCulture);
+        var raw = ToShortestRoundTripString(Math.Abs(value));
         var exponentMarker = raw.IndexOfAny(['e', 'E']);
         var mantissa = exponentMarker < 0 ? raw : raw[..exponentMarker];
         var exponent = exponentMarker < 0
@@ -46,6 +46,20 @@ internal static partial class ValueTransforms
         var scientificMantissa = length == 1 ? digits : digits[0] + "." + digits[1..];
         return sign + scientificMantissa + "e" + (scientificExponent >= 0 ? "+" : string.Empty) +
                scientificExponent.ToString(CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
+    /// Returns the shortest decimal (as integer digits and exponent, e.g. <c>"333E-3"</c>) that parses back to
+    /// exactly the finite <paramref name="value"/>; among equally short ones the closest, as ECMAScript's
+    /// Number::toString requires. The runtime's "R" and "E" formats do not guarantee this on any target.
+    /// </summary>
+    internal static string ToShortestRoundTripString(double value)
+    {
+        if (value == 0d) return "0E0";
+        if (value < 0) return "-" + ToShortestRoundTripString(-value);
+
+        var (digits, pointPosition) = DoubleConversion.ShortestDigits(value);
+        return digits + "E" + (pointPosition - digits.Length).ToString(CultureInfo.InvariantCulture);
     }
 
     public static double? GetValueAsNumber(object? value)

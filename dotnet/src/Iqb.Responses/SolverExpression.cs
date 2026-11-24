@@ -397,7 +397,7 @@ internal static class SolverExpression
             if (decimals != Math.Truncate(decimals) || decimals is < 0 or > 15)
                 throw new FormatException("The number of decimals must be an integer from 0 through 15.");
             if (!double.IsFinite(values[0])) return values[0];
-            var textValue = values[0].ToString("R", CultureInfo.InvariantCulture);
+            var textValue = ValueTransforms.ToShortestRoundTripString(values[0]);
             return decimal.TryParse(textValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var decimalValue)
                 ? (double)Math.Round(decimalValue, (int)decimals, MidpointRounding.AwayFromZero)
                 : Math.Round(values[0], (int)decimals, MidpointRounding.AwayFromZero);
