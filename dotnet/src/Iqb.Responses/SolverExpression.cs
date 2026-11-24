@@ -292,7 +292,7 @@ internal static class SolverExpression
                 if (_position == exponentStart) throw Error("Invalid exponent");
             }
             var token = text[start.._position];
-            if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
+            if (!DoubleConversion.TryParse(token, out var number))
             {
                 throw Error("Invalid number");
             }

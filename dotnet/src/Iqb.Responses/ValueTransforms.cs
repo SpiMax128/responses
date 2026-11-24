@@ -86,7 +86,7 @@ internal static partial class ValueTransforms
                 {
                     return null;
                 }
-                return double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed)
+                return DoubleConversion.TryParse(normalized, out var parsed)
                     ? parsed
                     : null;
             default:
@@ -101,7 +101,7 @@ internal static partial class ValueTransforms
             return null;
         }
         var match = ParseFloatRegex().Match(EcmaScript.TrimStart(text));
-        return match.Success && double.TryParse(match.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out var value)
+        return match.Success && DoubleConversion.TryParse(match.Value, out var value)
             ? value
             : null;
     }
